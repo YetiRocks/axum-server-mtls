@@ -1,0 +1,29 @@
+[package]
+name = "axum-mtls-acceptor"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.75"
+description = "mTLS client certificate extraction for axum-server. Wraps RustlsAcceptor to inject peer certificates into request extensions."
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/jrepp/axum-mtls-acceptor"
+keywords = ["axum", "mtls", "tls", "certificate", "authentication"]
+categories = ["web-programming", "authentication", "network-programming"]
+readme = "README.md"
+
+[dependencies]
+axum-server = { version = "0.7", features = ["tls-rustls-no-provider"] }
+rustls = { version = "0.23", default-features = false }
+rustls-pki-types = "1"
+tokio = { version = "1", features = ["net"] }
+tokio-rustls = "0.26"
+tower-service = "0.3"
+http = "1"
+x509-parser = "0.16"
+
+[dev-dependencies]
+axum = "0.8"
+hyper = "1"
+tokio = { version = "1", features = ["full"] }
+rustls = { version = "0.23", features = ["ring"] }
+rustls-pemfile = "2"
+rcgen = { version = "0.13", features = ["ring", "pem"] }
