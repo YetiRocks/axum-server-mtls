@@ -1,11 +1,11 @@
 [package]
-name = "axum-mtls-acceptor"
+name = "axum-server-mtls"
 version = "0.1.0"
 edition = "2021"
 rust-version = "1.75"
-description = "mTLS client certificate extraction for axum-server. Wraps RustlsAcceptor to inject peer certificates into request extensions."
+description = "mTLS peer certificate extraction for axum-server. Wraps RustlsAcceptor to inject client certificates into request extensions."
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/jrepp/axum-mtls-acceptor"
+repository = "https://github.com/jrepp/axum-server-mtls"
 keywords = ["axum", "mtls", "tls", "certificate", "authentication"]
 categories = ["web-programming", "authentication", "network-programming"]
 readme = "README.md"

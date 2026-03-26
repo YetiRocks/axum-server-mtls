@@ -1,4 +1,4 @@
-use axum_mtls_acceptor::PeerCertificates;
+use axum_server_mtls::PeerCertificates;
 use rcgen::{CertificateParams, KeyPair};
 
 /// Generate a self-signed CA certificate and key.

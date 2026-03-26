@@ -137,24 +137,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "axum-mtls-acceptor"
-version = "0.1.0"
-dependencies = [
- "axum",
- "axum-server",
- "http",
- "hyper",
- "rcgen",
- "rustls",
- "rustls-pemfile",
- "rustls-pki-types",
- "tokio",
- "tokio-rustls",
- "tower-service",
- "x509-parser",
-]
-
-[[package]]
 name = "axum-server"
 version = "0.7.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -174,6 +156,24 @@ dependencies = [
  "tokio",
  "tokio-rustls",
  "tower-service",
+]
+
+[[package]]
+name = "axum-server-mtls"
+version = "0.1.0"
+dependencies = [
+ "axum",
+ "axum-server",
+ "http",
+ "hyper",
+ "rcgen",
+ "rustls",
+ "rustls-pemfile",
+ "rustls-pki-types",
+ "tokio",
+ "tokio-rustls",
+ "tower-service",
+ "x509-parser",
 ]
 
 [[package]]

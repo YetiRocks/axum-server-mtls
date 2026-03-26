@@ -16,7 +16,7 @@ use crate::PeerCertificates;
 /// # Example
 ///
 /// ```rust,no_run
-/// use axum_mtls_acceptor::MtlsAcceptor;
+/// use axum_server_mtls::MtlsAcceptor;
 /// use axum_server::tls_rustls::{RustlsAcceptor, RustlsConfig};
 ///
 /// # async fn example() {

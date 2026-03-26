@@ -1,4 +1,4 @@
-# axum-mtls-acceptor
+# axum-server-mtls
 
 mTLS client certificate extraction for [axum-server](https://crates.io/crates/axum-server).
 
@@ -12,7 +12,7 @@ every HTTP request as an extension.
 
 ```rust
 use axum::{extract::Extension, routing::get, Router};
-use axum_mtls_acceptor::{MtlsAcceptor, PeerCertificates};
+use axum_server_mtls::{MtlsAcceptor, PeerCertificates};
 use axum_server::tls_rustls::{RustlsAcceptor, RustlsConfig};
 
 #[tokio::main]
