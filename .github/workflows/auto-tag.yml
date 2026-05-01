@@ -1,0 +1,58 @@
+name: auto-tag
+
+# When the daily-maintenance routine pushes a Cargo.toml version bump to main,
+# create and push the matching v$VERSION tag. The remote agent that pushes
+# the commit cannot push tag refs; this workflow does it via GITHUB_TOKEN,
+# which has full contents:write within this repo.
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'Cargo.toml'
+  workflow_dispatch:
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+          persist-credentials: true
+
+      - name: Detect version bump
+        id: version
+        run: |
+          current=$(grep -m1 '^version = ' Cargo.toml | sed -E 's/version = "(.*)"/\1/')
+          if git rev-parse HEAD~1 >/dev/null 2>&1; then
+            previous=$(git show HEAD~1:Cargo.toml | grep -m1 '^version = ' | sed -E 's/version = "(.*)"/\1/' || echo "")
+          else
+            previous=""
+          fi
+          echo "current=$current"
+          echo "previous=$previous"
+          if [ -n "$current" ] && [ "$current" != "$previous" ]; then
+            echo "bumped=true" >> "$GITHUB_OUTPUT"
+            echo "version=$current" >> "$GITHUB_OUTPUT"
+          else
+            echo "bumped=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create and push tag
+        if: steps.version.outputs.bumped == 'true'
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          tag="v$VERSION"
+          if git ls-remote --tags origin "$tag" | grep -q "refs/tags/$tag$"; then
+            echo "Tag $tag already exists on origin — skipping."
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git tag -a "$tag" -m "Release $tag"
+          git push origin "$tag"
