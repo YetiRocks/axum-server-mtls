@@ -2,7 +2,7 @@
 name = "axum-server-mtls"
 version = "0.1.0"
 edition = "2021"
-rust-version = "1.75"
+rust-version = "1.82"
 description = "mTLS peer certificate extraction for axum-server. Wraps RustlsAcceptor to inject client certificates into request extensions."
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/YetiRocks/axum-server-mtls"
@@ -11,19 +11,21 @@ categories = ["web-programming", "authentication", "network-programming"]
 readme = "README.md"
 
 [dependencies]
-axum-server = { version = "0.7", features = ["tls-rustls-no-provider"] }
+axum-server = { version = "0.8", features = ["tls-rustls-no-provider"] }
 rustls = { version = "0.23", default-features = false }
 rustls-pki-types = "1"
 tokio = { version = "1", features = ["net"] }
 tokio-rustls = "0.26"
 tower-service = "0.3"
 http = "1"
-x509-parser = "0.16"
+x509-parser = "0.18"
 
 [dev-dependencies]
 axum = "0.8"
-hyper = "1"
-tokio = { version = "1", features = ["full"] }
-rustls = { version = "0.23", features = ["ring"] }
-rustls-pemfile = "2"
-rcgen = { version = "0.13", features = ["ring", "pem"] }
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+rcgen = { version = "0.14", features = ["ring", "pem"] }
+
+# rustls is depended on directly so rustdoc intra-doc links resolve.
+# axum is referenced by doctests; tokio dev-feature enables `#[tokio::main]` in doctests.
+[package.metadata.cargo-machete]
+ignored = ["rustls", "axum", "tokio"]

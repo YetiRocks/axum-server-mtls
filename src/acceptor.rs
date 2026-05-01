@@ -2,16 +2,16 @@ use std::future::Future;
 use std::io;
 use std::pin::Pin;
 
+use crate::PeerCertificates;
 use axum_server::accept::Accept;
 use axum_server::tls_rustls::RustlsAcceptor;
 use rustls_pki_types::CertificateDer;
 use tokio::io::{AsyncRead, AsyncWrite};
 use tokio_rustls::server::TlsStream;
-use crate::PeerCertificates;
 
 /// An [`Accept`] wrapper around [`RustlsAcceptor`] that extracts client
 /// certificates from the TLS connection and injects them into every HTTP
-/// request as an [`axum::Extension<PeerCertificates>`].
+/// request as an `axum::Extension<PeerCertificates>`.
 ///
 /// # Example
 ///
@@ -25,7 +25,8 @@ use crate::PeerCertificates;
 ///     .unwrap();
 /// let acceptor = MtlsAcceptor::new(RustlsAcceptor::new(config));
 ///
-/// axum_server::bind("0.0.0.0:3000".parse().unwrap())
+/// let addr: std::net::SocketAddr = "0.0.0.0:3000".parse().unwrap();
+/// axum_server::bind(addr)
 ///     .acceptor(acceptor)
 ///     .serve(axum::Router::new().into_make_service())
 ///     .await

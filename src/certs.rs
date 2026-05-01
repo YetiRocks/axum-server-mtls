@@ -3,7 +3,7 @@ use x509_parser::prelude::*;
 
 /// Client certificate chain extracted from the TLS connection.
 ///
-/// Injected into every HTTP request on a connection as an [`axum::Extension`].
+/// Injected into every HTTP request on a connection as an `axum::Extension`.
 /// If the client did not present a certificate, `chain` is empty.
 ///
 /// # Extracting in handlers

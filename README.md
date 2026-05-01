@@ -28,7 +28,8 @@ async fn main() {
     // Wrap the RustlsAcceptor with MtlsAcceptor
     let acceptor = MtlsAcceptor::new(RustlsAcceptor::new(rustls_config));
 
-    axum_server::bind("0.0.0.0:3000".parse().unwrap())
+    let addr: std::net::SocketAddr = "0.0.0.0:3000".parse().unwrap();
+    axum_server::bind(addr)
         .acceptor(acceptor)
         .serve(app.into_make_service())
         .await

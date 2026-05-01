@@ -1,8 +1,8 @@
 use axum_server_mtls::PeerCertificates;
-use rcgen::{CertificateParams, KeyPair};
+use rcgen::{CertificateParams, Issuer, KeyPair};
 
-/// Generate a self-signed CA certificate and key.
-fn generate_ca() -> (String, String, rcgen::CertifiedKey) {
+/// Generate a self-signed CA certificate and return it as an Issuer.
+fn generate_ca() -> (String, String, Issuer<'static, KeyPair>) {
     let mut params = CertificateParams::new(Vec::<String>::new()).unwrap();
     params.is_ca = rcgen::IsCa::Ca(rcgen::BasicConstraints::Unconstrained);
     params
@@ -12,16 +12,12 @@ fn generate_ca() -> (String, String, rcgen::CertifiedKey) {
     let cert = params.self_signed(&key_pair).unwrap();
     let cert_pem = cert.pem();
     let key_pem = key_pair.serialize_pem();
-    (
-        cert_pem.clone(),
-        key_pem,
-        rcgen::CertifiedKey { cert, key_pair },
-    )
+    (cert_pem, key_pem, Issuer::new(params, key_pair))
 }
 
 /// Generate a client certificate signed by the CA.
 fn generate_client_cert(
-    ca: &rcgen::CertifiedKey,
+    ca: &Issuer<'static, KeyPair>,
     cn: &str,
     sans: &[&str],
 ) -> (String, String, Vec<u8>) {
@@ -32,7 +28,7 @@ fn generate_client_cert(
         .push(rcgen::DnType::CommonName, cn);
     params.is_ca = rcgen::IsCa::NoCa;
     let key_pair = KeyPair::generate().unwrap();
-    let cert = params.signed_by(&key_pair, &ca.cert, &ca.key_pair).unwrap();
+    let cert = params.signed_by(&key_pair, ca).unwrap();
     let cert_pem = cert.pem();
     let cert_der = cert.der().to_vec();
     let key_pem = key_pair.serialize_pem();
