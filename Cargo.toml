@@ -1,6 +1,6 @@
 [package]
 name = "axum-server-mtls"
-version = "0.1.4"
+version = "0.1.5"
 edition = "2021"
 rust-version = "1.82"
 description = "mTLS peer certificate extraction for axum-server. Wraps RustlsAcceptor to inject client certificates into request extensions."
