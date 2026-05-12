@@ -160,7 +160,7 @@ dependencies = [
 
 [[package]]
 name = "axum-server-mtls"
-version = "0.1.8"
+version = "0.1.9"
 dependencies = [
  "axum",
  "axum-server",
@@ -374,7 +374,7 @@ dependencies = [
 name = "h2"
 version = "0.4.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2f44da3a8150a6703ed5d34e164b875fd14c2cdab9af1252a9a1020bde2bdc54"
+checksum = "2f44da3a8150a6703ed5d34e164b875fd14c2cdab9af1254a9a1020bde2bdc54"
 dependencies = [
  "atomic-waker",
  "bytes",
@@ -959,7 +959,7 @@ dependencies = [
 name = "tokio-rustls"
 version = "0.26.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1729aa945f29d91ba541258c8df89027d5792d85a8841fb65e8bf0f4ede4ef61"
+checksum = "1729aa945f29d91ba541258c8df89027d5692d85a8841fb65e8bf0f4ede4ef61"
 dependencies = [
  "rustls",
  "tokio",
