@@ -160,7 +160,7 @@ dependencies = [
 
 [[package]]
 name = "axum-server-mtls"
-version = "0.1.39"
+version = "0.1.40"
 dependencies = [
  "axum",
  "axum-server",
