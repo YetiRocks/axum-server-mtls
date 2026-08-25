@@ -82,8 +82,23 @@ worked; if not after the retry window, the failure is genuine.
 
 ## Run history
 
-| Date       | Version  | Main push | Tag push source    | Tag on remote? |
-|------------|----------|-----------|--------------------|----------------|
-| 2026-08-25 | v0.1.110 | exit 0    | agent (direct)     | Yes (via proxy false-negative) |
-| 2026-08-25 | v0.1.111 | exit 0    | agent (direct)     | Yes (5-second delay)           |
-| 2026-08-25 | v0.1.112 | exit 0    | auto-tag.yml (GHA) | *see workflow run*             |
+| Date       | Version  | Main push | Tag push source    | Tag on remote? | Notes |
+|------------|----------|-----------|--------------------|----------------|-------|
+| 2026-08-25 | v0.1.110 | exit 0    | agent (direct)     | Yes            | HTTP 403, tag present immediately |
+| 2026-08-25 | v0.1.111 | exit 0    | agent (direct)     | Yes            | HTTP 403, tag appeared after 5 s delay |
+| 2026-08-25 | v0.1.112 | exit 0    | auto-tag.yml (GHA) | **Yes**        | Run #110, completed:success in 12 s, annotated tag created cleanly |
+
+### Key additional observation from run history
+
+Reviewing 110 consecutive `auto-tag.yml` runs (v0.1.85 → v0.1.112), **every
+single one completed with `success`** — the workflow has never failed. This
+confirms that `GITHUB_TOKEN` inside GitHub Actions has the required
+`contents: write` scope and is not subject to the proxy disconnect that affects
+agent sessions. The annotated tag for v0.1.112 (`efc1e1e`) was created by the
+workflow and correctly dereferences to commit `7d62516`.
+
+Additionally: for runs v0.1.110 and v0.1.111 the agent pushed the tag
+*directly* AND the auto-tag workflow also fired. The workflow's pre-check
+(`git ls-remote --tags origin "$tag" | grep -q "refs/tags/$tag$"`) caught the
+already-existing tag and skipped gracefully — no double-tagging, no errors.
+The workflow is robust to the agent's redundant pushes.
